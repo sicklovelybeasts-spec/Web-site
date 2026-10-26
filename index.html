@@ -7,7 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
     <style>
         body {
-            /* 全体の背景：もう少し明度を上げたダークパープル＆スモーキーブルー */
             background-color: #161022;
             background-image: 
                 radial-gradient(circle at 50% 30%, #31214a 0%, #120c1d 80%),
@@ -63,7 +62,6 @@
             width: 100%;
             max-width: 320px;
             margin: auto;
-            /* コンテナの背景も少し明度を上げて見やすく */
             background-color: rgba(26, 19, 36, 0.92);
             border: 2px solid #ff4da6;
             padding: 15px 12px;
@@ -72,7 +70,7 @@
             z-index: 1;
         }
 
-        /* 挨拶：ちょっとだけ横にうねうね動く演出 */
+        /* 挨拶：横にうねうね動く演出 */
         .welcome-msg {
             font-size: 0.68rem;
             color: #ff80bf;
@@ -96,7 +94,31 @@
             54% { opacity: 0.45; text-shadow: 0 0 2px rgba(255, 0, 127, 0.4); }
         }
 
-        /* タイトル：微妙に横揺れ */
+        /* アクセスカウンター */
+        .counter-box {
+            text-align: center;
+            background: #000;
+            border: 1px inset #553573;
+            padding: 5px;
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+        }
+
+        .counter-label {
+            font-size: 0.55rem;
+            color: #ff4da6;
+            margin-bottom: 2px;
+            letter-spacing: 1px;
+        }
+
+        .counter-digits {
+            font-size: 1.1rem;
+            color: #00ffcc;
+            text-shadow: 0 0 6px rgba(0, 255, 204, 0.8);
+            font-family: monospace;
+        }
+
+        /* タイトル */
         h1 {
             font-size: 0.88rem;
             color: #00f0ff;
@@ -129,7 +151,7 @@
             text-shadow: 0 0 3px rgba(255, 77, 166, 0.5);
         }
 
-        /* キャラクターアイコン（正方形・アイコンのみ・小刻みランダムジャンプ） */
+        /* キャラクターアイコン */
         .char-5icons-container {
             display: flex;
             justify-content: space-between;
@@ -196,7 +218,7 @@
             filter: brightness(1.05) contrast(1.3) saturate(1.1);
         }
 
-        /* メインプレイボタン（準備中・点滅演出付き） */
+        /* プレイボタン */
         .play-btn-wrap {
             text-align: center;
             margin: 12px 0;
@@ -221,13 +243,14 @@
             50% { opacity: 0.3; border-color: #00f0ff; }
         }
 
-        /* リンク一覧（古のインターネット風の青いリンク文字：#0000ff / 下線付き） */
+        /* リンク一覧（背景を落ち着いた青紫系にして視認性と世界観を両立） */
         .link-list {
             list-style: none;
             padding: 0;
             margin: 8px 0;
             border: 1px solid #ff4da6;
-            background: rgba(30, 22, 42, 0.85);
+            background: #251d38;
+            box-shadow: inset 0 0 5px rgba(0, 240, 255, 0.15);
         }
 
         .link-list li {
@@ -240,46 +263,49 @@
 
         .link-list a {
             color: #0000ff;
+            font-weight: bold;
             text-decoration: underline;
-            padding: 5px 8px;
+            padding: 6px 8px;
             display: block;
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             letter-spacing: 0.5px;
             transition: background 0.2s, color 0.2s, transform 0.2s;
         }
 
         .link-list a:hover {
-            background: rgba(255, 77, 166, 0.25);
+            background: #ff4da6;
             color: #ffffff;
             transform: translateX(3px);
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+            text-shadow: none;
         }
 
-        /* 横並びボタンエリア（不具合報告＆アンケート）も古の青いリンク文字に統一 */
+        /* 横並びボタンエリア（青紫系の背景に調整） */
         .btn-group-area {
             display: flex;
             justify-content: space-between;
             gap: 6px;
             margin: 10px 0;
-            background: rgba(30, 22, 42, 0.85);
+            background: #251d38;
             border: 1px solid #ff4da6;
             padding: 6px;
+            box-shadow: inset 0 0 5px rgba(0, 240, 255, 0.15);
         }
 
         .sub-btn {
             flex: 1;
             text-align: center;
-            background: rgba(45, 33, 64, 0.9);
+            background: #32254a;
             color: #0000ff;
+            font-weight: bold;
             padding: 5px 4px;
             text-decoration: underline;
             border: 1px solid #553573;
-            font-size: 0.7rem;
+            font-size: 0.72rem;
             transition: background 0.2s, color 0.2s;
         }
 
         .sub-btn:hover {
-            background: rgba(255, 77, 166, 0.25);
+            background: #ff4da6;
             color: #ffffff;
         }
 
@@ -336,7 +362,13 @@
 <div class="container">
 
     <!-- 挨拶 -->
-    <div class="welcome-msg">…ここは、どこかの記憶の回廊…</div>
+    <div class="welcome-msg">…病み【きみ】と向き合う恋愛ADV…</div>
+
+    <!-- アクセスカウンター -->
+    <div class="counter-box">
+        <div class="counter-label">- TOTAL VISITORS -</div>
+        <div class="counter-digits" id="visitor-counter">000000</div>
+    </div>
 
     <!-- ヘッダータイトル -->
     <h1>Sick Lovely Beasts ~Rewrite Diary~</h1>
@@ -358,7 +390,7 @@
         <span class="play-btn">▷ 今すぐプレイ！（準備中）</span>
     </div>
 
-    <!-- リンク集（古の青いリンク文字） -->
+    <!-- リンク集（青紫系の背景に変更） -->
     <div style="text-align: center;">
         <span class="label-tag">◇ Link List ◇</span>
         <ul class="link-list">
@@ -370,7 +402,7 @@
         </ul>
     </div>
 
-    <!-- 下部：不具合報告＆アンケート（古の青いリンク文字に統一） -->
+    <!-- 下部：不具合報告＆アンケート（青紫系の背景に統一） -->
     <div class="btn-group-area">
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSeWvdWQ0WxBhHY8sKARJaRfKFYuGkwvw_Y2jlchWpUXc_eY6g/viewform?usp=preview" class="sub-btn">不具合報告</a>
         <a href="https://docs.google.com/forms/d/e/1FAIpQLSd6fWKzw_7PI5I-lyQQ_uUyat4fUur-puP5mmGw0rrwJq4MUA/viewform?usp=preview" class="sub-btn">アンケート</a>
@@ -388,7 +420,7 @@
             <div>・対象年齢：17歳以上</div>
         </div>
         <div style="text-align: center; margin-top: 8px; font-size: 0.65rem; color: #ff80bf; letter-spacing: 1px;">
-            Copyright (c) Suzuki.M All Rights Reserved.
+            Copyright (c) M.Suzuki All Rights Reserved.
         </div>
     </div>
 
@@ -400,6 +432,16 @@
 </div>
 
 <script>
+    fetch('https://api.countapi.xyz/hit/sicklovelybeasts/main')
+        .then(response => response.json())
+        .then(data => {
+            let countStr = String(data.value).padStart(6, '0');
+            document.getElementById('visitor-counter').innerText = countStr;
+        })
+        .catch(error => {
+            document.getElementById('visitor-counter').innerText = '000001';
+        });
+
     function openModal(imgSrc) {
         document.getElementById('modal-img').src = imgSrc;
         document.getElementById('overlay').style.display = 'flex';
