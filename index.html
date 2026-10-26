@@ -58,6 +58,38 @@
             97% { opacity: 0.1; transform: translateY(2px); }
         }
 
+        /* 【突発ノイズ・画面グリッチ用オーバーレイ（眩しくないダークグリッチ）】 */
+        #glitch-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 9999;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.85),
+                rgba(0, 0, 0, 0.85) 3px,
+                rgba(35, 10, 40, 0.9) 3px,
+                rgba(35, 10, 40, 0.9) 6px
+            );
+        }
+
+        /* 突発フラッシュ・白フラッシュを使わないダーク＆ノイズ化 */
+        body.glitch-active {
+            animation: sudden-glitch 0.2s steps(2, start) infinite;
+        }
+
+        body.glitch-active .container {
+            transform: translate(calc(var(--gx, 0) * 1px), calc(var(--gy, 0) * 1px)) skewX(calc(var(--sk, 0) * 1deg));
+            filter: brightness(0.6) contrast(1.8) hue-rotate(280deg);
+        }
+
+        @keyframes sudden-glitch {
+            0% { filter: brightness(0.5) contrast(1.8); }
+            50% { filter: brightness(0.3) hue-rotate(90deg); }
+            100% { filter: none; }
+        }
+
         .container {
             width: 100%;
             max-width: 320px;
@@ -68,6 +100,7 @@
             box-shadow: 0 0 20px rgba(255, 77, 166, 0.25), inset 0 0 15px rgba(0, 240, 255, 0.1);
             position: relative;
             z-index: 1;
+            transition: transform 0.05s ease;
         }
 
         /* 挨拶：横にうねうね動く演出 */
@@ -218,7 +251,7 @@
             filter: brightness(1.05) contrast(1.3) saturate(1.1);
         }
 
-        /* プレイボタン */
+        /* プレイボタン（準備中） */
         .play-btn-wrap {
             text-align: center;
             margin: 12px 0;
@@ -226,24 +259,19 @@
 
         .play-btn {
             display: inline-block;
-            background: rgba(36, 26, 52, 0.9);
-            color: #ff80bf;
+            background: #32254a;
+            color: #8888aa;
+            font-weight: bold;
             padding: 6px 16px;
             text-decoration: none;
-            border: 1px solid #ff4da6;
+            border: 1px solid #553573;
             font-size: 0.78rem;
             cursor: not-allowed;
             letter-spacing: 1px;
-            text-shadow: 0 0 3px rgba(255, 77, 166, 0.5);
-            animation: btn-blink 1s ease-in-out infinite;
+            text-shadow: none;
         }
 
-        @keyframes btn-blink {
-            0%, 100% { opacity: 1; border-color: #ff4da6; }
-            50% { opacity: 0.3; border-color: #00f0ff; }
-        }
-
-        /* リンク一覧（背景を落ち着いた青紫系にして視認性と世界観を両立） */
+        /* リンク一覧 */
         .link-list {
             list-style: none;
             padding: 0;
@@ -279,7 +307,7 @@
             text-shadow: none;
         }
 
-        /* 横並びボタンエリア（青紫系の背景に調整） */
+        /* 横並びボタンエリア */
         .btn-group-area {
             display: flex;
             justify-content: space-between;
@@ -295,18 +323,13 @@
             flex: 1;
             text-align: center;
             background: #32254a;
-            color: #0000ff;
+            color: #8888aa;
             font-weight: bold;
             padding: 5px 4px;
-            text-decoration: underline;
+            text-decoration: none;
             border: 1px solid #553573;
-            font-size: 0.72rem;
-            transition: background 0.2s, color 0.2s;
-        }
-
-        .sub-btn:hover {
-            background: #ff4da6;
-            color: #ffffff;
+            font-size: 0.7rem;
+            cursor: not-allowed;
         }
 
         /* フッター・注意書き */
@@ -322,7 +345,7 @@
             border: 1px solid #553573;
             padding: 5px;
             margin-bottom: 5px;
-            text-align: left;
+            text-align: center;
         }
 
         .footer-label {
@@ -359,10 +382,13 @@
 </head>
 <body>
 
+<!-- 突発ノイズ用オーバーレイ（暗転・ブラックアウト仕様） -->
+<div id="glitch-overlay"></div>
+
 <div class="container">
 
     <!-- 挨拶 -->
-    <div class="welcome-msg">…病み【きみ】と向き合う恋愛ADV…</div>
+    <div class="welcome-msg" id="dynamic-msg">…病み【きみ】と向き合う恋愛ADV…</div>
 
     <!-- アクセスカウンター -->
     <div class="counter-box">
@@ -385,39 +411,39 @@
         </div>
     </div>
 
-    <!-- プレイボタン（点滅） -->
+    <!-- プレイボタン（準備中） -->
     <div class="play-btn-wrap">
-        <span class="play-btn">▷ 今すぐプレイ！（準備中）</span>
+        <span class="play-btn" id="play-btn-element">▷ 今すぐプレイ！（準備中）</span>
     </div>
 
-    <!-- リンク集（青紫系の背景に変更） -->
+    <!-- リンク集 -->
     <div style="text-align: center;">
         <span class="label-tag">◇ Link List ◇</span>
         <ul class="link-list">
-            <li><a href="https://twitter.com/sikulabi">・ Twitter(X)</a></li>
-            <li><a href="https://youtube.com/@sicklovelybeasts">・ YouTube</a></li>
-            <li><a href="https://www.pixiv.net/users/36999403">・ pixiv</a></li>
-            <li><a href="https://booth.pm/ja/items/6742630">・ Booth</a></li>
-            <li><a href="https://sicklovelybeasts.fanbox.cc/">・ FANBOX</a></li>
+            <li><a href="https://twitter.com/sikulabi">Twitter(X)</a></li>
+            <li><a href="https://youtube.com/@sicklovelybeasts">YouTube</a></li>
+            <li><a href="https://www.pixiv.net/users/36999403">pixiv</a></li>
+            <li><a href="https://sikulabi.booth.pm/">Booth</a></li>
+            <li><a href="https://sicklovelybeasts.fanbox.cc/">FANBOX</a></li>
         </ul>
     </div>
 
-    <!-- 下部：不具合報告＆アンケート（青紫系の背景に統一） -->
+    <!-- 下部：不具合報告＆アンケート（準備中） -->
     <div class="btn-group-area">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeWvdWQ0WxBhHY8sKARJaRfKFYuGkwvw_Y2jlchWpUXc_eY6g/viewform?usp=preview" class="sub-btn">不具合報告</a>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSd6fWKzw_7PI5I-lyQQ_uUyat4fUur-puP5mmGw0rrwJq4MUA/viewform?usp=preview" class="sub-btn">アンケート</a>
+        <span class="sub-btn">不具合報告（準備中）</span>
+        <span class="sub-btn">アンケート（準備中）</span>
     </div>
 
     <!-- フッター情報 -->
     <div class="footer">
         <div class="footer-item">
             <div class="footer-label">ネタバレ・二次創作</div>
-            <div>・スクショSNS投稿OK！</div>
-            <div>・二次創作タグ：#しくらびFA</div>
+            <div>スクショSNS投稿OK！</div>
+            <div>二次創作タグ：#しくらびFA</div>
         </div>
         <div class="footer-item">
-            <div class="footer-label">Caution</div>
-            <div>・対象年齢：17歳以上</div>
+            <div class="footer-label">ご注意</div>
+            <div>対象年齢：17歳以上(想定)</div>
         </div>
         <div style="text-align: center; margin-top: 8px; font-size: 0.65rem; color: #ff80bf; letter-spacing: 1px;">
             Copyright (c) M.Suzuki All Rights Reserved.
@@ -432,6 +458,7 @@
 </div>
 
 <script>
+    // アクセスカウンター処理
     fetch('https://api.countapi.xyz/hit/sicklovelybeasts/main')
         .then(response => response.json())
         .then(data => {
@@ -449,6 +476,63 @@
     function closeModal() {
         document.getElementById('overlay').style.display = 'none';
     }
+
+    /* -------------------------------------------------------------
+       ★ 眩しくない暗転・闇ノイズ演出（JavaScript）
+    ------------------------------------------------------------- */
+    const glitchOverlay = document.getElementById('glitch-overlay');
+    const dynamicMsg = document.getElementById('dynamic-msg');
+    const originalMsg = "…病み【きみ】と向き合う恋愛ADV…";
+    
+    const eerieMsgs = [
+        "…逃 げ ら れ な い…",
+        "…書き換えないで…",
+        "…だれが操作してるの？…",
+        "…み つ け た…",
+        "…記憶が歪んでいく…"
+    ];
+
+    function triggerGlitch() {
+        const offsetX = (Math.random() - 0.5) * 16;
+        const offsetY = (Math.random() - 0.5) * 10;
+        const skew = (Math.random() - 0.5) * 8;
+
+        document.documentElement.style.setProperty('--gx', offsetX);
+        document.documentElement.style.setProperty('--gy', offsetY);
+        document.documentElement.style.setProperty('--sk', skew);
+
+        // 白反転・明転を排除し、画面が暗く歪む仕様に変更
+        document.body.classList.add('glitch-active');
+        glitchOverlay.style.display = 'block';
+
+        const isMsgChange = Math.random() < 0.4;
+        if (isMsgChange) {
+            const randomText = eerieMsgs[Math.floor(Math.random() * eerieMsgs.length)];
+            dynamicMsg.innerText = randomText;
+        }
+
+        const duration = 120 + Math.random() * 130;
+        setTimeout(() => {
+            document.body.classList.remove('glitch-active');
+            glitchOverlay.style.display = 'none';
+            dynamicMsg.innerText = originalMsg;
+        }, duration);
+
+        const nextTime = 4000 + Math.random() * 8000;
+        setTimeout(triggerGlitch, nextTime);
+    }
+
+    setTimeout(triggerGlitch, 5000 + Math.random() * 3000);
+
+    const playBtn = document.getElementById('play-btn-element');
+    let clickCount = 0;
+    playBtn.addEventListener('click', () => {
+        clickCount++;
+        if (clickCount >= 3) {
+            clickCount = 0;
+            triggerGlitch();
+        }
+    });
 </script>
 
 </body>
