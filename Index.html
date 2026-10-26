@@ -20,206 +20,168 @@ button {
     <title>Sick Lovely Beasts ~Rewrite Diary~</title>
     <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
     <style>
-        :root {
-            /* ベビーブルー＆ペールトーンのパレット */
-            --bg-color: #e3edf5;         /* 全体背景：明るく爽やかなベビーブルーグレー */
-            --paper-bg: #f8fbfe;       /* ルーズリーフ紙面：清潔感のあるオフホワイト */
-            --main-blue: #7bb2e0;       /* メインカラー：明るく可愛いベビーブルー */
-            --dark-blue: #4a759e;       /* ダークカラー：引き締まるブルー */
-            --soft-blue: #d0e4f2;       /* アクセント・格子線：やわらかいベビーブルー */
-            --line-blue: #a8d0e6;       /* 境界線・枠線：爽やかなブルー */
-            --text-color: #3e5870;      /* テキスト色：すっきりとしたダークブルー */
-            --accent-pink: #f2c4c9;     /* アクセント：やさしいくすみピンク */
-            --tape-color: rgba(168, 208, 230, 0.5); /* マスキングテープ */
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
         body {
-            background-color: var(--bg-color);
-            /* 方眼ノート風の背景パターン */
+            background-color: #dbeaf5;
             background-image: 
-                linear-gradient(var(--soft-blue) 1px, transparent 1px),
-                linear-gradient(90deg, var(--soft-blue) 1px, transparent 1px);
-            background-size: 20px 20px;
-            font-family: 'DotGothic16', sans-serif;
-            color: var(--text-color);
+                radial-gradient(circle at 50% 30%, #eaf3fb 0%, #c4dbed 80%),
+                linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 3px;
+            color: #5a7690;
+            font-family: 'DotGothic16', monospace, sans-serif;
             margin: 0;
             padding: 20px 10px;
             display: flex;
             justify-content: center;
-            font-size: 13px; /* 全体の基準文字サイズ */
-            line-height: 1.5;
+            align-items: center;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
         }
 
-        /* ルーズリーフ風コンテナ */
+        /* 画面全体に走るうっすらとしたフィルム・ノイズ風オーバーレイ */
+        body::before {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(90, 120, 150, 0.06) 50%), linear-gradient(90deg, rgba(255, 255, 255, 0.02), rgba(0, 0, 0, 0.02), rgba(255, 255, 255, 0.02));
+            z-index: 999;
+            background-size: 100% 2px, 4px 100%;
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        /* 時折走る横方向のノイズ（ちらつき） */
+        body::after {
+            content: " ";
+            display: block;
+            position: fixed;
+            top: 0; left: 0; bottom: 0; right: 0;
+            background: rgba(180, 210, 235, 0.04);
+            opacity: 0;
+            z-index: 1000;
+            pointer-events: none;
+            animation: screen-noise 7s infinite;
+        }
+
+        @keyframes screen-noise {
+            0%, 95%, 98% { opacity: 0; transform: translateY(0); }
+            96% { opacity: 0.3; transform: translateY(-8px); }
+            97% { opacity: 0.1; transform: translateY(12px); }
+            99% { opacity: 0.25; transform: translateY(-4px); }
+        }
+
+        /* ガラケーの縦長感を演出するコンパクトなコンテナ（最大幅を絞り、上下の余白を確保） */
         .container {
             width: 100%;
-            max-width: 420px;
-            background: var(--paper-bg);
-            border: 2px solid var(--line-blue);
-            border-radius: 4px;
-            padding: 20px 15px 15px 30px; /* 左側にルーズリーフの余白 */
+            max-width: 320px;
+            margin: auto;
+            background-color: rgba(240, 246, 250, 0.9);
+            border: 2px solid #8ab0ce;
+            padding: 15px 12px;
+            box-shadow: 0 0 15px rgba(120, 160, 200, 0.25), inset 0 0 10px rgba(255, 255, 255, 0.6);
             position: relative;
-            box-shadow: 4px 6px 15px rgba(100, 140, 180, 0.12);
+            z-index: 1;
         }
 
-        /* ルーズリーフのバインダー穴 */
-        .container::before {
-            content: '';
-            position: absolute;
-            left: 8px;
-            top: 20px;
-            bottom: 20px;
-            width: 10px;
-            background-image: radial-gradient(circle, #a8d0e6 40%, transparent 45%);
-            background-size: 10px 22px;
-            background-repeat: repeat-y;
+        /* 夢の断片のような挨拶 */
+        .welcome-msg {
+            font-size: 0.68rem;
+            color: #6b8fae;
+            margin-bottom: 6px;
+            letter-spacing: 1.5px;
+            text-align: center;
+            opacity: 0.85;
+            animation: text-flicker 4s infinite;
         }
 
-        /* ルーズリーフのピンクマージン線 */
-        .container::after {
-            content: '';
-            position: absolute;
-            left: 24px;
-            top: 0;
-            bottom: 0;
-            width: 1px;
-            background-color: var(--accent-pink);
+        @keyframes text-flicker {
+            0%, 100% { opacity: 0.85; }
+            50% { opacity: 0.45; }
+            52% { opacity: 0.95; }
+            54% { opacity: 0.55; }
         }
 
-        /* マスキングテープ風見出し（さらにコンパクトに） */
-        .tape-header {
-            background: var(--tape-color);
-            display: inline-block;
-            padding: 2px 8px;
-            margin: 0 auto 6px auto;
-            transform: rotate(-1deg);
-            border-left: 2px dashed #fff;
-            border-right: 2px dashed #fff;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-        }
-
-        /* タイトル文字を大幅に縮小 */
         h1 {
-            font-size: 0.82rem;
-            font-weight: normal;
-            color: var(--dark-blue);
-            margin: 0;
+            font-size: 0.88rem;
+            color: #3b5c78;
+            background: rgba(205, 225, 240, 0.6);
+            border-top: 1px dashed #7a9ec2;
+            border-bottom: 1px dashed #7a9ec2;
+            padding: 6px;
+            margin: 0 0 12px 0;
             text-align: center;
-            letter-spacing: 0.3px;
+            letter-spacing: 1px;
+            text-shadow: 0 0 3px rgba(150, 190, 220, 0.4);
         }
 
-        /* 横並びボタンエリア（不具合報告＆アンケート） */
-        .btn-group-area {
-            display: flex;
-            justify-content: space-between;
-            gap: 8px;
-            margin: 12px 0;
-        }
-
-        .sub-btn {
-            flex: 1;
-            background: #fff;
-            color: var(--dark-blue);
-            padding: 6px 4px;
-            text-decoration: none;
-            border: 1px dashed var(--main-blue);
-            border-radius: 3px;
-            font-size: 0.8rem;
-            text-align: center;
-            transition: all 0.2s ease;
-            box-shadow: 1px 1px 3px rgba(0,0,0,0.03);
-        }
-
-        .sub-btn:hover {
-            background: var(--soft-blue);
-            color: var(--dark-blue);
-        }
-
-        /* セクションラベル（文房具付箋風） */
         .label-tag {
             display: inline-block;
-            background: var(--main-blue);
-            color: #fff;
-            font-size: 0.75rem;
-            padding: 2px 8px;
-            border-radius: 2px;
-            margin-bottom: 8px;
-            box-shadow: 1px 1px 3px rgba(0,0,0,0.08);
+            background: rgba(195, 218, 238, 0.75);
+            color: #486a8a;
+            font-size: 0.7rem;
+            padding: 2px 10px;
+            border-left: 3px solid #6b8fae;
+            margin: 10px 0 5px 0;
+            letter-spacing: 1px;
         }
 
-        /* キャラクターアイコン：5つ横並びレイアウト */
+        /* キャラクターアイコン（四角形） */
         .char-5icons-container {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            background: #fff;
-            border: 1px solid var(--line-blue);
-            padding: 10px 8px;
-            border-radius: 4px;
-            margin: 8px 0 15px 0;
+            background: rgba(225, 238, 248, 0.85);
+            border: 1px solid #8ab0ce;
+            padding: 6px;
+            margin: 4px 0 10px 0;
         }
 
         .char-icon-item {
-            width: 44px;
-            height: 44px;
-            border: 2px solid var(--main-blue);
-            border-radius: 50%;
+            width: 38px;
+            height: 50px;
+            border: 1px solid #7a9ec2;
             background-size: cover;
             background-position: center;
-            background-color: var(--bg-color);
+            background-color: #d0e4f2;
             cursor: pointer;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: transform 0.2s, border-color 0.2s;
+            filter: brightness(0.98) contrast(1.02);
+            transition: filter 0.3s ease, border-color 0.3s ease;
         }
 
         .char-icon-item:hover {
-            transform: scale(1.08);
-            border-color: var(--dark-blue);
+            filter: brightness(1.05) contrast(1.08);
+            border-color: #3b5c78;
         }
 
-        /* メインプレイボタン（クリップ止めメモ風） */
+        /* メインプレイボタン（準備中） */
         .play-btn-wrap {
             text-align: center;
-            margin: 15px 0;
-            position: relative;
+            margin: 12px 0;
         }
 
         .play-btn {
-            display: block;
-            background: var(--main-blue);
-            color: #fff;
-            padding: 10px;
+            display: inline-block;
+            background: rgba(215, 230, 242, 0.85);
+            color: #6b8fae;
+            padding: 6px 16px;
             text-decoration: none;
-            border: 2px solid var(--dark-blue);
-            border-radius: 4px;
-            font-size: 0.95rem;
-            font-weight: bold;
+            border: 1px solid #8ab0ce;
+            font-size: 0.78rem;
+            cursor: not-allowed;
             letter-spacing: 1px;
-            box-shadow: 2px 3px 0px var(--dark-blue);
-            transition: transform 0.1s, box-shadow 0.1s;
-        }
-
-        .play-btn:active {
-            transform: translate(2px, 2px);
-            box-shadow: 0px 0px 0px var(--dark-blue);
         }
 
         /* リンク一覧 */
         .link-list {
             list-style: none;
             padding: 0;
-            margin: 12px 0;
-            background: #fff;
-            border: 1px solid var(--line-blue);
-            border-radius: 4px;
+            margin: 8px 0;
+            border: 1px solid #8ab0ce;
+            background: rgba(230, 240, 248, 0.8);
         }
 
         .link-list li {
-            border-bottom: 1px dashed var(--line-blue);
+            border-bottom: 1px dotted #a8c6de;
         }
 
         .link-list li:last-child {
@@ -227,40 +189,69 @@ button {
         }
 
         .link-list a {
-            color: var(--dark-blue);
+            color: #4a6a8a;
             text-decoration: none;
-            padding: 6px 10px;
+            padding: 5px 8px;
             display: block;
-            font-size: 0.85rem;
-            transition: background 0.2s;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            transition: background 0.2s, color 0.2s;
         }
 
         .link-list a:hover {
-            background: var(--soft-blue);
+            background: rgba(205, 225, 240, 0.7);
+            color: #233c52;
+        }
+
+        /* 横並びボタンエリア */
+        .btn-group-area {
+            display: flex;
+            justify-content: space-between;
+            gap: 6px;
+            margin: 10px 0;
+        }
+
+        .sub-btn {
+            flex: 1;
+            text-align: center;
+            background: rgba(220, 232, 242, 0.85);
+            color: #5a7690;
+            padding: 5px 4px;
+            text-decoration: none;
+            border: 1px solid #8ab0ce;
+            font-size: 0.7rem;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .sub-btn:hover {
+            background: rgba(200, 220, 238, 0.8);
+            color: #3b5c78;
         }
 
         /* フッター・注意書き */
         .footer {
-            margin-top: 15px;
-            font-size: 0.78rem;
-            border-top: 2px dashed var(--line-blue);
-            padding-top: 12px;
+            margin-top: 12px;
+            font-size: 0.68rem;
+            border-top: 1px dashed #8ab0ce;
+            padding-top: 8px;
         }
 
         .footer-item {
-            background: #fff;
-            border: 1px solid var(--line-blue);
-            padding: 6px 8px;
-            margin-bottom: 6px;
-            border-radius: 3px;
+            background: rgba(230, 240, 248, 0.7);
+            border: 1px solid #a8c6de;
+            padding: 5px;
+            margin-bottom: 5px;
+            text-align: left;
         }
 
         .footer-label {
             font-weight: bold;
-            color: var(--dark-blue);
-            border-bottom: 1px dotted var(--line-blue);
-            margin-bottom: 3px;
-            padding-bottom: 2px;
+            color: #5a7690;
+            border-bottom: 1px dotted #a8c6de;
+            margin-bottom: 2px;
+            padding-bottom: 1px;
+            text-align: center;
+            letter-spacing: 1px;
         }
 
         /* モーダル画像表示 */
@@ -269,9 +260,9 @@ button {
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(74, 117, 158, 0.65);
+            background: rgba(180, 205, 225, 0.85);
             backdrop-filter: blur(2px);
-            z-index: 1000;
+            z-index: 2000;
             align-items: center;
             justify-content: center;
         }
@@ -279,9 +270,8 @@ button {
         #overlay img {
             max-width: 85%;
             max-height: 80%;
-            border: 4px solid #fff;
-            border-radius: 4px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 20px rgba(100, 140, 180, 0.4);
             cursor: pointer;
         }
     </style>
@@ -290,16 +280,15 @@ button {
 
 <div class="container">
 
-    <!-- ヘッダータイトル -->
-    <div style="text-align: center;">
-        <div class="tape-header">
-            <h1>Sick Lovely Beasts ~Rewrite Diary~</h1>
-        </div>
-    </div>
+    <!-- 夢の断片のような挨拶 -->
+    <div class="welcome-msg">…病み〜きみ〜と向き合う恋愛ADV…</div>
 
-    <!-- キャラクター紹介（アイコンのみ横に5つ） -->
-    <div style="margin-top: 12px;">
-        <span class="label-tag"> Characters</span>
+    <!-- ヘッダータイトル -->
+    <h1>Sick Lovely Beasts ~Rewrite Diary~</h1>
+
+    <!-- キャラクター紹介（四角形アイコン） -->
+    <div style="text-align: center;">
+        <span class="label-tag">◇ Characters ◇</span>
         <div class="char-5icons-container">
             <div class="char-icon-item" style="background-image: url('ichika_icon.png');" onclick="openModal('ichika_full.jpg')"></div>
             <div class="char-icon-item" style="background-image: url('setsuna_icon.png');" onclick="openModal('setsuna_full.jpg')"></div>
@@ -309,25 +298,27 @@ button {
         </div>
     </div>
 
-    <!-- プレイボタン -->
+    <!-- プレイボタン（準備中） -->
     <div class="play-btn-wrap">
-        <a href="https://your-game-url.com" class="play-btn">▷ 今すぐプレイ！</a>
+        <span class="play-btn">▷ 今すぐプレイ！（準備中）</span>
     </div>
 
     <!-- リンク集 -->
-    <span class="label-tag"> Link List</span>
-    <ul class="link-list">
-        <li><a href="https://twitter.com/sikulabi">▷ Twitter(X)</a></li>
-        <li><a href="https://youtube.com/@sicklovelybeasts">▷ YouTube</a></li>
-        <li><a href="https://www.pixiv.net/users/36999403">▷ pixiv</a></li>
-        <li><a href="https://booth.pm/ja/items/6742630">▷ Booth</a></li>
-        <li><a href="https://sicklovelybeasts.fanbox.cc/">▷ FANBOX</a></li>
-    </ul>
+    <div style="text-align: center;">
+        <span class="label-tag">◇ Link List ◇</span>
+        <ul class="link-list">
+            <li><a href="https://twitter.com/sikulabi">・ Twitter(X)</a></li>
+            <li><a href="https://youtube.com/@sicklovelybeasts">・ YouTube</a></li>
+            <li><a href="https://www.pixiv.net/users/36999403">・ pixiv</a></li>
+            <li><a href="https://booth.pm/ja/items/6742630">・ Booth</a></li>
+            <li><a href="https://sicklovelybeasts.fanbox.cc/">・ FANBOX</a></li>
+        </ul>
+    </div>
 
     <!-- 下部：不具合報告＆アンケート（横並び） -->
     <div class="btn-group-area">
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeWvdWQ0WxBhHY8sKARJaRfKFYuGkwvw_Y2jlchWpUXc_eY6g/viewform?usp=preview" class="sub-btn">✦ 不具合報告</a>
-        <a href="https://docs.google.com/forms/d/e/1FAIpQLSd6fWKzw_7PI5I-lyQQ_uUyat4fUur-puP5mmGw0rrwJq4MUA/viewform?usp=preview" class="sub-btn">★ アンケート</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeWvdWQ0WxBhHY8sKARJaRfKFYuGkwvw_Y2jlchWpUXc_eY6g/viewform?usp=preview" class="sub-btn">不具合報告</a>
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSd6fWKzw_7PI5I-lyQQ_uUyat4fUur-puP5mmGw0rrwJq4MUA/viewform?usp=preview" class="sub-btn">アンケート</a>
     </div>
 
     <!-- フッター情報 -->
@@ -341,8 +332,8 @@ button {
             <div class="footer-label">Caution</div>
             <div>・対象年齢：17歳以上</div>
         </div>
-        <div class="footer-item" style="text-align: center; background: transparent; border: none;">
-            <div style="font-size: 0.75rem; color: #6b8fae;">©Suzuki.M</div>
+        <div style="text-align: center; margin-top: 8px; font-size: 0.65rem; color: #6b8fae; letter-spacing: 1px;">
+            Copyright (c) Suzuki.M All Rights Reserved.
         </div>
     </div>
 
@@ -356,7 +347,7 @@ button {
 <script>
     function openModal(imgSrc) {
         document.getElementById('modal-img').src = imgSrc;
-        document.getElementById('overlay').style.display = 'flex';
+        document.getElementById('overlay'].style.display = 'flex'; // ※環境により閉じタグ等調整
     }
     function closeModal() {
         document.getElementById('overlay').style.display = 'none';
